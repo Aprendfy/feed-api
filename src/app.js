@@ -4,6 +4,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 
 import { version } from '../package.json';
+import './v1/config/mongo';
 
 const port = process.eventNames.PORT || 3000;
 const app = express();
