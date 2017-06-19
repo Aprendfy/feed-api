@@ -25,3 +25,5 @@ app.use('/health', (req, res) => res.status(200).json({ version, dateOfBirth }))
 app.use('/v1/admin/user', userAdmin);
 
 app.listen(port, () => console.log(`[#] Server on port: ${port}`));
+
+export default app;

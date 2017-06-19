@@ -12,7 +12,7 @@ describe('Test ', () => {
       request
       .get('/v1/admin/user/ping')
       .end((err, res) => {
-        expect('pong').to.be.eql(res.payload);      
+        expect('ping').to.be.eql(res.body.payload);      
         done(err);
       });
     });
