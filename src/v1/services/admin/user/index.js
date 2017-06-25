@@ -1,10 +1,17 @@
 import express from 'express';
 import validate from 'express-validation';
 
-// import { loginSchema } from './schema';
+import { findUserByIdSchema } from './schema';
 
 const router = express.Router();
+
 router.get('/ping', (req, res, next) => {
+  return res.status(200).json({
+      payload : 'ping'
+    });
+});
+
+router.get('/:id', (req, res, next) => {
   return res.status(200).json({
       payload : 'ping'
     });
