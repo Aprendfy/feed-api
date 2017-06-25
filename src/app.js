@@ -4,6 +4,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 
 import { version } from '../package.json';
+import * as handlers from './v1/util/handlers';
 import './v1/config/mongo';
 
 
@@ -23,6 +24,10 @@ app.use('/health', (req, res) => res.status(200).json({ version, dateOfBirth }))
 
 // Routes Import
 app.use('/v1/admin/user', userAdmin);
+
+
+app.use(handlers.validationError);
+app.use(handlers.internalError);
 
 app.listen(port, () => console.log(`[#] Server on port: ${port}`));
 
