@@ -4,21 +4,21 @@ const AdminSchema = new mongoose.Schema({
   name: {
     type: String,
     unique: true,
-    required: true
+    required: true,
   },
   email: {
     type: String,
     unique: true,
-    required: true
+    required: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   type: {
     type: String,
     enum: ['ADIM', 'PUBLISHER', 'USER'],
-    default: 'USER'
+    default: 'USER',
   },
   avatar: String,
   facebook: String,
@@ -28,9 +28,9 @@ const AdminSchema = new mongoose.Schema({
   userStatus: {
     type: String,
     enum: ['PENDING', 'REQUESTED', 'ACCEPTED', 'DENIED', 'BLOCKED'],
-    default: 'PENDING'
-  }
-  }, 
+    default: 'PENDING',
+  },
+},
   {
     strict: true,
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
@@ -41,7 +41,7 @@ export function userModel() {
 }
 
 export function register(data) {
-   return new User({ ...data, ...{ userStatus: 'PENDING' } })
+  return new User({ ...data, ...{ userStatus: 'PENDING' } })
     .save()
     .then(payload => payload)
     .catch(err => ({ payload: err, code: 500 }))
