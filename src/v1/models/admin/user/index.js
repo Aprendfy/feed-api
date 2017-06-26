@@ -33,16 +33,18 @@ const AdminSchema = new mongoose.Schema({
 },
   {
     strict: true,
-    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
+    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
   });
 
 export function userModel() {
   return mongoose.model('User', AdminSchema);
 }
 
+const User = userModel();
+
 export function register(data) {
   return new User({ ...data, ...{ userStatus: 'PENDING' } })
     .save()
     .then(payload => payload)
-    .catch(err => ({ payload: err, code: 500 }))
+    .catch(err => ({ payload: err, code: 500 }));
 }
