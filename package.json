@@ -34,6 +34,7 @@
     "express-unless": "^0.3.0",
     "express-validation": "^1.0.2",
     "jsonwebtoken": "^7.4.0",
+    "joi": "^10.6.0",
     "mongoose": "^4.9.8",
     "morgan": "^1.8.1",
     "passport": "^0.3.2",

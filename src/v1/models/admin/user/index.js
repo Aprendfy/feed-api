@@ -42,6 +42,15 @@ export function userModel() {
 
 const User = userModel();
 
+export function getUserById(userId) {
+  const ObjectId = mongoose.Types.ObjectId;
+
+  return User.findById(ObjectId(userId))
+    .then(result => result)
+    .catch((err) => {
+      throw { payload: err, code: 500 };
+    });
+}
 export function register(data) {
   return new User({ ...data, ...{ userStatus: 'PENDING' } })
     .save()
