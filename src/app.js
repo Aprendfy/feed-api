@@ -9,6 +9,7 @@ import './v1/config/mongo';
 
 
 import userAdmin from './v1/services/admin/user';
+import authAdmin from './v1/services/admin/authentication';
 
 const port = process.eventNames.PORT || 3000;
 const app = express();
@@ -24,6 +25,8 @@ app.use('/health', (req, res) => res.status(200).json({ version, dateOfBirth }))
 
 // Routes Import
 app.use('/v1/admin/user', userAdmin);
+app.use('/v1/admin/auth', authAdmin);
+
 
 
 app.use(handlers.validationError);

@@ -1,4 +1,8 @@
 import mongoose from '../../../config/mongo';
+import { compare } from '../../../config/crypto';
+import { encode } from '../../../config/jwt';
+
+import * as messages from '../../../config/messages';
 
 const AdminSchema = new mongoose.Schema({
   name: {
@@ -56,4 +60,25 @@ export function register(data) {
     .save()
     .then(payload => payload)
     .catch(err => ({ payload: err, code: 500 }));
+}
+
+export function login(email, password) {
+  return User
+    .findOne({ email })
+    .then(async (user) => {
+      // const validatePassword = await compare(password.toString(), user.password.toString());
+
+      const validatePassword = password === user.password;
+
+      if (user && validatePassword) {
+        const result = user.toObject();
+        result.password = undefined;
+
+        return { ...result, ...{ authorization: `Bearer ${encode(user)}` } };
+      }
+      throw { status: 500, payload: {} }
+    })
+    .catch((err) => {
+      throw { message: messages.LOGIN_FAILED, status: 422, payload: err };
+    });
 }
