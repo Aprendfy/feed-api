@@ -37,15 +37,4 @@ describe('INTEGRATION TESTS - USER ', () => {
         });
     });
   });
-
-  describe('GET /admin/user/ping', () => {
-    it('should get ping as answer', (done) => {
-      request
-      .get('/v1/admin/user/ping')
-      .end((err, res) => {
-        expect('ping').to.be.eql(res.body.payload);
-        done(err);
-      });
-    });
-  });
 });
