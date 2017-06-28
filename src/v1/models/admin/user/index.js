@@ -76,7 +76,7 @@ export function login(email, password) {
 
         return { ...result, ...{ authorization: `Bearer ${encode(user)}` } };
       }
-      throw { status: 500, payload: {} }
+      throw { status: 500, payload: {} };
     })
     .catch((err) => {
       throw { message: messages.LOGIN_FAILED, status: 422, payload: err };
@@ -87,7 +87,7 @@ export function update(body, userId) {
   const ObjectId = mongoose.Types.ObjectId;
   const { name } = body;
   return User.findOneAndUpdate({ _id: ObjectId(userId) }, { $set: { name } }, { new: true })
-    .then(payload => {throw { message: messages.LOGIN_FAILED, status: 422, payload: err };})
+    .then(payload => payload)
     .catch((err) => {
       throw { message: messages.LOGIN_FAILED, status: 422, payload: err };
     });
