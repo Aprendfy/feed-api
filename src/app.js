@@ -27,8 +27,6 @@ app.use('/health', (req, res) => res.status(200).json({ version, dateOfBirth }))
 app.use('/v1/admin/user', userAdmin);
 app.use('/v1/admin/auth', authAdmin);
 
-
-
 app.use(handlers.validationError);
 app.use(handlers.internalError);
 

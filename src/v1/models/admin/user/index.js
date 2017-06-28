@@ -85,10 +85,10 @@ export function login(email, password) {
 
 export function update(body, userId) {
   const ObjectId = mongoose.Types.ObjectId;
-  return User.findOneAndUpdate({ _id: ObjectId(userId) }, body)
-    .then((payload) => {
-      console.log('pay', payload);
-      return payload;
-    })
-    .catch(err => ({ payload: err, code: 500 }));
+  const { name } = body;
+  return User.findOneAndUpdate({ _id: ObjectId(userId) }, { $set: { name } }, { new: true })
+    .then(payload => {throw { message: messages.LOGIN_FAILED, status: 422, payload: err };})
+    .catch((err) => {
+      throw { message: messages.LOGIN_FAILED, status: 422, payload: err };
+    });
 }

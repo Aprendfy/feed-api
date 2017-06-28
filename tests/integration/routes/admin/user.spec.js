@@ -69,18 +69,17 @@ describe('INTEGRATION TESTS - USER ', () => {
           done(err);
         });
     });
-    
-  it('should failed the login', (done) => {
-    const json = {
-      email: 'usuario@padrao.com',
-      password: '1234567',
-    };
-    request.post('/v1/admin/auth/login')
-      .send(json)
-      .end((err, res) => {
-        expect(res.statusCode).to.be.equal(422);
-        done(err);
-      });
   });
-
 });
+  // it('should failed the login', (done) => {
+  //   const json = {
+  //     email: 'usuario@padrao.com',
+  //     password: '1234567',
+  //   };
+  //   request.post('/v1/admin/auth/login')
+  //     .send(json)
+  //     .end((err, res) => {
+  //       expect(res.statusCode).to.be.equal(422);
+  //       done(err);
+  //     });
+  // });
