@@ -3,5 +3,19 @@
   "parserOptions": {
     "sourceType": "module"
   },
+  "rules": {
+    "no-underscore-dangle": ["error", { "allow": ["_id"] }]
+  },
+  "plugins": [
+  ],
+  "env": {
+    "node": true,
+    "mocha": true
+  },
+  "globals": {
+    "userModel": true,
+    "request": true,
+    "expect": true
+  },
   "extends": "airbnb"
 }

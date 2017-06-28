@@ -1,5 +1,3 @@
-/*  global describe  beforeEach userModel it expect request */
-
 describe('INTEGRATION TESTS - USER ', () => {
   const defaultUser = {
     name: 'Usuário Padrão',
