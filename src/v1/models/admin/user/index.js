@@ -82,3 +82,13 @@ export function login(email, password) {
       throw { message: messages.LOGIN_FAILED, status: 422, payload: err };
     });
 }
+
+export function update(body, userId) {
+  const ObjectId = mongoose.Types.ObjectId;
+  return User.findOneAndUpdate({ _id: ObjectId(userId) }, body)
+    .then((payload) => {
+      console.log('pay', payload);
+      return payload;
+    })
+    .catch(err => ({ payload: err, code: 500 }));
+}

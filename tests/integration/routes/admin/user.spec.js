@@ -1,7 +1,6 @@
 /*  global describe  beforeEach userModel it expect request */
 
 describe('INTEGRATION TESTS - USER ', () => {
-
   const defaultUser = {
     name: 'Usuário Padrão',
     email: 'usuario@padrao.com',
@@ -51,6 +50,21 @@ describe('INTEGRATION TESTS - USER ', () => {
         .end((err, res) => {
           expect(defaultUser.name).to.be.eql(res.body.payload.name);
           expect(defaultUser.email).to.be.eql(res.body.payload.email);
+          done(err);
+        });
+    });
+  });
+
+  describe('UPDATE /admin/user/update', () => {
+    it('should udpate a user', (done) => {
+      const userUpdate = {
+        name: 'Nome Trocado',
+        userId: defaultUser.id,
+      };
+      request.put('/v1/admin/user/update')
+        .send(userUpdate)
+        .end((err, res) => {
+          expect(userUpdate.name).to.be.eql(res.body.payload.name);
           done(err);
         });
     });

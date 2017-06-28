@@ -1,6 +1,6 @@
 import supertest from 'supertest';
 import chai from 'chai';
-import app from './../../src/app.js';
+import app from './../../src/app';
 import { userModel } from './../../src/v1/models/admin/user/';
 
 global.app = app;
