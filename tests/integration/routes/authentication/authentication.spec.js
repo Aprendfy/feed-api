@@ -3,16 +3,29 @@ describe('INTEGRATION TESTS - AUTH ', () => {
     name: 'Usuário Padrão',
     email: 'usuario@padrao.com',
     password: '123456',
+    type: 'PUBLISHER',
   };
 
   before(() => userModel.remove({}));
 
   describe('POST /admin/user/register', () => {
-    it('should register and return the user');
+    it('should register and return the user', (done) => {
+      request.post('/v1/admin/auth/register')
+        .send(defaultUser)
+        .end((err, res) => {
+          const { payload } = res.body;
+          expect(res.statusCode).to.be.equal(201);
+          expect(payload.name).to.be.eql(defaultUser.name);
+          expect(payload.email).to.be.eql(defaultUser.email);
+          expect(payload.type).to.be.eql(defaultUser.type);
+          expect(payload.authorization).to.be.a('string');
+          done(err);
+        });
+    });
   });
 
   describe('POST /admin/user/login', () => {
-    it.skip('should return the login user', (done) => {
+    it('should return the login user', (done) => {
       const json = {
         email: 'usuario@padrao.com',
         password: '123456',
@@ -28,7 +41,7 @@ describe('INTEGRATION TESTS - AUTH ', () => {
     });
   });
 
-  it.skip('should failed the login', (done) => {
+  it('should failed the login', (done) => {
     const json = {
       email: 'usuario@padrao.com',
       password: '1234567',
