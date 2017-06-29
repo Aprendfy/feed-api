@@ -1,5 +1,5 @@
 import mongoose from '../../../config/mongo';
-import { compare } from '../../../config/crypto';
+import { compare, hash } from '../../../config/crypto';
 import { encode } from '../../../config/jwt';
 
 import * as messages from '../../../config/messages';
@@ -40,6 +40,22 @@ const AdminSchema = new mongoose.Schema({
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
   });
 
+AdminSchema.pre('save', true, async function preSave(next, done) {
+  try {
+    if (this.password) {
+      hash(this.password)
+        .then((password) => {
+          this.password = password;
+          done();
+        })
+        .catch(e => done(e));
+    }
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
 export function userModel() {
   return mongoose.model('User', AdminSchema);
 }
@@ -55,20 +71,24 @@ export function getUserById(userId) {
       throw new Error({ payload: err, code: 500 });
     });
 }
+
 export function register(data) {
-  return new User({ ...data, ...{ userStatus: 'PENDING' } })
+  return new User({ ...data, userStatus: 'PENDING' })
     .save()
-    .then(payload => payload)
-    .catch(err => ({ payload: err, code: 500 }));
+    .then((payload) => {
+      const user = payload.toObject();
+      user.password = undefined;
+
+      return { ...user, authorization: `Bearer ${encode(user)}` };
+    })
+    .catch((err) => { throw err; });
 }
 
 export function login(email, password) {
   return User
     .findOne({ email })
     .then(async (user) => {
-      // const validatePassword = await compare(password.toString(), user.password.toString());
-
-      const validatePassword = password === user.password;
+      const validatePassword = await compare(password.toString(), user.password.toString());
 
       if (user && validatePassword) {
         const result = user.toObject();
@@ -76,10 +96,10 @@ export function login(email, password) {
 
         return { ...result, authorization: `Bearer ${encode(user)}` };
       }
-      throw new Error({ status: 500, payload: {} });
+      throw Object({ status: 500, payload: {} });
     })
     .catch((err) => {
-      throw new Error({ message: messages.LOGIN_FAILED, status: 422, payload: err });
+      throw Object({ message: messages.LOGIN_FAILED, status: 422, payload: err });
     });
 }
 

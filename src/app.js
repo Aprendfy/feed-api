@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import { version } from '../package.json';
 import * as handlers from './v1/util/handlers';
 import './v1/config/mongo';
+import { decodeJWT, hydrateUser } from './v1/config/jwt';
 
 
 import userAdmin from './v1/services/admin/user';
@@ -13,6 +14,13 @@ import authAdmin from './v1/services/admin/authentication';
 
 const port = process.eventNames.PORT || 3000;
 const app = express();
+
+const unless = {
+  path: [
+    { url: /^\/v1\/admin\/auth\/register/ },
+    { url: /^\/v1\/admin\/auth\/login/ },
+  ],
+};
 
 const dateOfBirth = new Date();
 
@@ -22,6 +30,9 @@ app.use(cors());
 app.use(morgan('dev'));
 
 app.use('/health', (req, res) => res.status(200).json({ version, dateOfBirth }));
+
+app.use(decodeJWT.unless(unless));
+app.use(hydrateUser.unless(unless));
 
 // Routes Import
 app.use('/v1/admin/user', userAdmin);

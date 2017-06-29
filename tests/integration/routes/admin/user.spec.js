@@ -25,7 +25,7 @@ describe('INTEGRATION TESTS - USER ', () => {
   });
 
   describe('GET /admin/user/{id}', () => {
-    it('should return a user', (done) => {
+    it.skip('should return a user', (done) => {
       request
         .get(`/v1/admin/user/${defaultUser.id}`)
         .end((err, res) => {
@@ -36,26 +36,8 @@ describe('INTEGRATION TESTS - USER ', () => {
     });
   });
 
-
-  describe('POST /admin/user/login', () => {
-    it('should return the login user', (done) => {
-      const json = {
-        email: 'usuario@padrao.com',
-        password: '123456',
-      };
-      request.post('/v1/admin/auth/login')
-        .send(json)
-        .end((err, res) => {
-          expect(defaultUser.name).to.be.eql(res.body.payload.name);
-          expect(defaultUser.email).to.be.eql(res.body.payload.email);
-          expect(res.statusCode).to.be.equal(200);
-          done(err);
-        });
-    });
-  });
-
   describe('UPDATE /admin/user/update', () => {
-    it('should udpate a user', (done) => {
+    it.skip('should udpate a user', (done) => {
       const userUpdate = {
         name: 'Nome Trocado',
         userId: defaultUser.id,
@@ -69,15 +51,4 @@ describe('INTEGRATION TESTS - USER ', () => {
     });
   });
 });
-  // it('should failed the login', (done) => {
-  //   const json = {
-  //     email: 'usuario@padrao.com',
-  //     password: '1234567',
-  //   };
-  //   request.post('/v1/admin/auth/login')
-  //     .send(json)
-  //     .end((err, res) => {
-  //       expect(res.statusCode).to.be.equal(422);
-  //       done(err);
-  //     });
-  // });
+
