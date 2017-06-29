@@ -25,7 +25,7 @@ describe('INTEGRATION TESTS - USER ', () => {
   });
 
   describe('GET /admin/user/{id}', () => {
-    it('should return a user', (done) => {
+    it.skip('should return a user', (done) => {
       request
         .get(`/v1/admin/user/${defaultUser.id}`)
         .end((err, res) => {
@@ -37,7 +37,7 @@ describe('INTEGRATION TESTS - USER ', () => {
   });
 
   describe('UPDATE /admin/user/update', () => {
-    it('should udpate a user', (done) => {
+    it.skip('should udpate a user', (done) => {
       const userUpdate = {
         name: 'Nome Trocado',
         userId: defaultUser.id,
