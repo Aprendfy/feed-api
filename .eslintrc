@@ -14,6 +14,7 @@
   },
   "globals": {
     "userModel": true,
+    "categoryModel": true,
     "request": true,
     "expect": true
   },

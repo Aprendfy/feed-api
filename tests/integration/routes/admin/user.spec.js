@@ -5,7 +5,7 @@ describe('INTEGRATION TESTS - USER ', () => {
     password: '123456',
   };
 
-  beforeEach((done) => {
+  before((done) => {
     userModel
       .remove({})
       .then(() => {

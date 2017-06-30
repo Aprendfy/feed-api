@@ -11,6 +11,7 @@ import { decodeJWT, hydrateUser } from './v1/config/jwt';
 
 import userAdmin from './v1/services/admin/user';
 import authAdmin from './v1/services/admin/authentication';
+import category from './v1/services/app/category';
 
 const port = process.eventNames.PORT || 3000;
 const app = express();
@@ -37,6 +38,7 @@ app.use(hydrateUser.unless(unless));
 // Routes Import
 app.use('/v1/admin/user', userAdmin);
 app.use('/v1/admin/auth', authAdmin);
+app.use('/v1/app/category', category);
 
 app.use(handlers.validationError);
 app.use(handlers.internalError);
