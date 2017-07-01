@@ -27,8 +27,10 @@ describe('INTEGRATION TESTS - POST ', () => {
     image: 'http://i.huffpost.com/gen/3971736/images/o-HAPPY-PEOPLE-facebook.jpg',
   };
 
-  before(() => {
-    postModel.remove({});
+  before((done) => {
+    postModel.remove({}).then(() => {
+      done();
+    }).catch(err => console.log(`Error on before ${err}`));
   });
 
   describe('POST /admin/user/login', () => {

@@ -6,7 +6,12 @@ describe('INTEGRATION TESTS - AUTH ', () => {
     type: 'PUBLISHER',
   };
 
-  before(() => userModel.remove({}));
+  before((done) => {
+    userModel.remove({}).then(() => {
+      done();
+    }).catch(err => console.log(`Error on before ${err}`));
+  });
+
 
   describe('POST /admin/auth/register', () => {
     it('should register and return the user', (done) => {
