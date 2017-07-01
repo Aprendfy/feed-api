@@ -43,3 +43,40 @@ export function createPost(data) {
     });
 }
 
+export function updatePost(user, postId, data) {
+  const ObjectId = mongoose.Types.ObjectId;
+
+  const { title, category, readingTime, level, body, image } = data;
+
+  return Post.findOneAndUpdate(
+    {
+      _id: ObjectId(postId),
+      ownerId: ObjectId(user._id),
+    },
+    {
+      $set: {
+        title,
+        category,
+        readingTime,
+        level,
+        body,
+        image,
+      },
+    },
+    {
+      new: true,
+      projection: {
+        __v: 0,
+      },
+    })
+    .then((result) => {
+      if (!result) {
+        throw Object({ message: messages.POST_NOT_FOUND, status: 422 });
+      }
+      return result;
+    })
+    .catch((err) => {
+      throw Object(err);
+    });
+}
+
