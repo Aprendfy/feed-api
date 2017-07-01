@@ -94,7 +94,7 @@ export function login(email, password) {
         const result = user.toObject();
         result.password = undefined;
 
-        return { ...result, authorization: `Bearer ${encode(user)}` };
+        return { ...result, authorization: `Bearer ${encode(result)}` };
       }
       throw Object({ status: 500, payload: {} });
     })
