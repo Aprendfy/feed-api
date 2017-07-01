@@ -7,11 +7,6 @@ dotenv.config();
 const { MONGO_URL } = process.env;
 
 mongoose.Promise = Promise;
-mongoose.connect(MONGO_URL);
-console.log("url mongo", MONGO_URL);
-
-mongoose.connection.on('connected', () => {
-    console.log("Conectado ao MongoDB");
-});
+mongoose.connect(MONGO_URL, { useMongoClient: true });
 
 export default mongoose;

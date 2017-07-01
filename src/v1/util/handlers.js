@@ -12,7 +12,7 @@ export function validationError(err, req, res, next) {
   return next(err);
 }
 
-export function internalError(err, req, res, next) {
+export function internalError(err, req, res) {
   return res.status(err.status || 500).json({
     payload: err.payload ? {} : err,
     status: err.status || 500,
