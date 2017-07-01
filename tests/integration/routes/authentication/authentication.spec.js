@@ -36,6 +36,7 @@ describe('INTEGRATION TESTS - AUTH ', () => {
           expect(defaultUser.name).to.be.eql(res.body.payload.name);
           expect(defaultUser.email).to.be.eql(res.body.payload.email);
           expect(res.statusCode).to.be.equal(200);
+          expect(res.body.payload.authorization).to.be.a('string');
           done(err);
         });
     });

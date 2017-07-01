@@ -18,10 +18,10 @@ export async function hydrateUser(req, res, next) {
     if (!req.user) {
       throw Object('Token is either missing or invalid');
     }
-
     const { _id } = req.user;
+
     // Search for an user
-    const user = await Admin.findById(_id);
+    const user = await Admin.getUserById(_id);
     if (user) {
       return next();
     }
