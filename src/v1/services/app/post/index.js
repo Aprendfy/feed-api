@@ -6,7 +6,7 @@ import { createPostSchema } from './schema';
 
 const router = express.Router();
 
-router.post('/add', validate(createPostSchema), ({ body, user }, res, next) => {
+router.post('/', validate(createPostSchema), ({ body, user }, res, next) => {
   createPost({ ...body, ownerId: user._id })
     .then(payload => res.status(201).json({ payload }))
     .catch(error => next(error));

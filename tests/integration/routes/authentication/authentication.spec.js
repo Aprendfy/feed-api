@@ -8,7 +8,7 @@ describe('INTEGRATION TESTS - AUTH ', () => {
 
   before(() => userModel.remove({}));
 
-  describe('POST /admin/user/register', () => {
+  describe('POST /admin/auth/register', () => {
     it('should register and return the user', (done) => {
       request.post('/v1/admin/auth/register')
         .send(defaultUser)
@@ -24,7 +24,7 @@ describe('INTEGRATION TESTS - AUTH ', () => {
     });
   });
 
-  describe('POST /admin/user/login', () => {
+  describe('POST /admin/auth/login', () => {
     it('should return the login user', (done) => {
       const json = {
         email: 'usuario@padrao.com',

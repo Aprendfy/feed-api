@@ -27,7 +27,9 @@ describe('INTEGRATION TESTS - POST ', () => {
     image: 'http://i.huffpost.com/gen/3971736/images/o-HAPPY-PEOPLE-facebook.jpg',
   };
 
-  before(() => postModel.remove({}));
+  before(() => {
+    postModel.remove({});
+  });
 
   describe('POST /admin/user/login', () => {
     it('should return the login user', (done) => {
@@ -47,19 +49,19 @@ describe('INTEGRATION TESTS - POST ', () => {
     });
   });
 
-  describe('POST /app/posts/add', () => {
+  describe('POST /app/posts/', () => {
     it('should return the inserted post', (done) => {
       const json = defaultPost;
-      request.post('/v1/app/posts/add')
-      .send(json)
-      .set('Authorization', defaultUser.authorization)
-      .end((err, res) => {
-        const { payload } = res.body;
-        expect(res.statusCode).to.be.equal(201);
-        expect(payload).to.be.an('object').that.includes(defaultPost);
-        expect(payload._id).to.be.an('string');
-        done(err);
-      });
+      request.post('/v1/app/posts/')
+        .send(json)
+        .set('Authorization', defaultUser.authorization)
+        .end((err, res) => {
+          const { payload } = res.body;
+          expect(res.statusCode).to.be.equal(201);
+          expect(payload).to.be.an('object').that.includes(defaultPost);
+          expect(payload._id).to.be.an('string');
+          done(err);
+        });
     });
   });
 });
