@@ -6,9 +6,14 @@ describe('INTEGRATION TESTS - AUTH ', () => {
     type: 'PUBLISHER',
   };
 
-  before(() => userModel.remove({}));
+  before((done) => {
+    userModel.remove({}).then(() => {
+      done();
+    }).catch(err => console.log(`Error on before ${err}`));
+  });
 
-  describe('POST /admin/user/register', () => {
+
+  describe('POST /admin/auth/register', () => {
     it('should register and return the user', (done) => {
       request.post('/v1/admin/auth/register')
         .send(defaultUser)
@@ -24,7 +29,7 @@ describe('INTEGRATION TESTS - AUTH ', () => {
     });
   });
 
-  describe('POST /admin/user/login', () => {
+  describe('POST /admin/auth/login', () => {
     it('should return the login user', (done) => {
       const json = {
         email: 'usuario@padrao.com',
@@ -36,6 +41,7 @@ describe('INTEGRATION TESTS - AUTH ', () => {
           expect(defaultUser.name).to.be.eql(res.body.payload.name);
           expect(defaultUser.email).to.be.eql(res.body.payload.email);
           expect(res.statusCode).to.be.equal(200);
+          expect(res.body.payload.authorization).to.be.a('string');
           done(err);
         });
     });
