@@ -1,5 +1,4 @@
 describe('INTEGRATION TESTS - POST ', () => {
-
   const defaultUser = {
     name: 'Usuário Padrão',
     email: 'usuario@padrao.com',
@@ -17,9 +16,9 @@ describe('INTEGRATION TESTS - POST ', () => {
   };
 
   before((done) => {
-    postModel.remove({}).then(() => {
-      done();
-    }).catch(err => console.log(`Error on before ${err}`));
+    postModel.remove({})
+          .then(() => done())
+          .catch(err => console.log(`Error on before ${err}`));
   });
 
   describe('POST /admin/user/login', () => {

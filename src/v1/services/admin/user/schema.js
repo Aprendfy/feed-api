@@ -22,7 +22,7 @@ export const updateUserSchema = {
 
 };
 
-export const user = {
+export const registerSchema = {
 
 };
 

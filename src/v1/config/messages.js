@@ -3,6 +3,7 @@ export const INTERNAL_ERROR = 'Um erro ocorreu durante a requisição';
 
 export const LOGIN_FAILED = 'Email ou senha incorreto';
 export const UPDATE_USER_FAILED = 'Falha ao Atualizar dados do Usuário';
+export const CREATE_CATEGORY_FAILED = 'Falha ao cadastrar nova categoria';
 
 export const CREATE_POST_FAILED = 'Falha ao salvar o post';
 export const POST_NOT_FOUND = 'Post não encontrado';
