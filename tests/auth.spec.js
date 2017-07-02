@@ -7,9 +7,9 @@ describe('INTEGRATION TESTS - AUTH ', () => {
   };
 
   before((done) => {
-    userModel.remove({}).then(() => {
-      done();
-    }).catch(err => console.log(`Error on before ${err}`));
+    userModel.remove({})
+      .then(() => done())
+      .catch(err => console.log(`Error on before ${err}`));
   });
 
 

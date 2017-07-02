@@ -15,6 +15,7 @@
   "globals": {
     "userModel": true,
     "postModel": true,
+    "categoryModel": true,
     "request": true,
     "expect": true
   },

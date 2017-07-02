@@ -7,6 +7,6 @@ dotenv.config();
 const { MONGO_URL } = process.env;
 
 mongoose.Promise = Promise;
-mongoose.connect(MONGO_URL, { useMongoClient: true });
+mongoose.connect(MONGO_URL);
 
 export default mongoose;
