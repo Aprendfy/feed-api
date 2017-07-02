@@ -8,10 +8,7 @@ const router = express.Router();
 
 router.post('/', validate(newCategorySchema), ({ body }, res, next) => {
   create(body)
-    .then(payload => res.status(201).json({
-      message: 'Categoria Criado com Sucesso',
-      payload,
-    }))
+    .then(payload => res.status(201).json({ payload }))
     .catch(error => next(error));
 });
 
