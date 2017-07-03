@@ -24,7 +24,6 @@
   "homepage": "https://github.com/hebertporto/feed-api#readme",
   "dependencies": {
     "babel-runtime": "^6.23.0",
-    "bcrypt": "^1.0.2",
     "bcryptjs": "^2.4.3",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
