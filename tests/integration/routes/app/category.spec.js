@@ -52,4 +52,53 @@ describe('INTEGRATION TESTS - CATEGORIES', () => {
         });
     });
   });
+
+  describe('GET /app/categories/', () => {
+    it('should return all categories', (done) => {
+      request.get('/v1/app/categories/')
+        .end((err, res) => {
+          const { payload } = res.body;
+          expect(res.statusCode).to.be.equal(200);
+          expect(payload[0].name).to.be.equal(defaultCategory.name);
+          done(err);
+        });
+    });
+    it('should return one category', (done) => {
+      request.get(`/v1/app/categories/${defaultCategory._id}`)
+        .end((err, res) => {
+          const { payload } = res.body;
+          expect(res.statusCode).to.be.equal(200);
+          expect(payload.name).to.be.equal(defaultCategory.name);
+          done(err);
+        });
+    });
+  });
+
+  describe('PUT /app/categories/', () => {
+    it('should update a category', (done) => {
+      const json = {
+        name: 'Mega Novo Facebook',
+      };
+      request.put(`/v1/app/categories/${defaultCategory._id}`)
+        .send(json)
+        .set('Authorization', defaultUser.authorization)
+        .end((err, res) => {
+          const { payload } = res.body;
+          expect(res.statusCode).to.be.equal(200);
+          expect(payload.name).to.be.equal(json.name);
+          done(err);
+        });
+    });
+  });
+
+  describe('DELETE /app/categories/', () => {
+    it('should remove a category', (done) => {
+      request.delete(`/v1/app/categories/${defaultCategory._id}`)
+        .set('Authorization', defaultUser.authorization)
+        .end((err, res) => {
+          expect(res.statusCode).to.be.equal(200);
+          done(err);
+        });
+    });
+  });
 });

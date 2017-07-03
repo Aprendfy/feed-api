@@ -1,33 +1,27 @@
 describe('INTEGRATION TESTS - USER ', () => {
   const defaultUser = {
-    name: 'Usuário Padrão',
-    email: 'usuario@padrao.com',
+    name: 'Usuário de Teste',
+    email: 'usuario@teste.com',
     password: '123456',
   };
 
   before((done) => {
     userModel
-      .remove({})
-      .then(() => {
-        userModel
-          .create(defaultUser)
-          .then((result) => {
-            defaultUser.id = result._id;
-            return done();
-          })
-          .catch((err) => {
-            console.log('Error Create defaultUser', err);
-          });
+      .create(defaultUser)
+      .then((result) => {
+        defaultUser.id = result._id;
+        return done();
       })
       .catch((err) => {
-        console.log('Error ao Limpar o banco', err);
+        console.log('Error Create defaultUser', err);
       });
   });
+
 
   describe('POST /admin/user/login', () => {
     it('should return the login user', (done) => {
       const json = {
-        email: 'usuario@padrao.com',
+        email: 'usuario@teste.com',
         password: '123456',
       };
       request.post('/v1/admin/auth/login')
@@ -55,19 +49,19 @@ describe('INTEGRATION TESTS - USER ', () => {
     });
   });
 
-  // describe('UPDATE /admin/user/update', () => {
-  //   it('should udpate a user', (done) => {
-  //     const userUpdate = {
-  //       name: 'Nome Trocado',
-  //       userId: defaultUser.id,
-  //     };
-  //     request.put('/v1/admin/user/update')
-  //       .send(userUpdate)
-  //       .set('Authorization', defaultUser.authorization)
-  //       .end((err, res) => {
-  //         expect(userUpdate.name).to.be.eql(res.body.payload.name);
-  //         done(err);
-  //       });
-  //   });
-  // });
+  describe('UPDATE /admin/user/update', () => {
+    it('should udpate a user', (done) => {
+      const userUpdate = {
+        name: 'Nome Trocado',
+        userId: defaultUser.id,
+      };
+      request.put('/v1/admin/user/update')
+        .send(userUpdate)
+        .set('Authorization', defaultUser.authorization)
+        .end((err, res) => {
+          expect(userUpdate.name).to.be.eql(res.body.payload.name);
+          done(err);
+        });
+    });
+  });
 });

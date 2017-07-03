@@ -6,5 +6,23 @@ export const newCategorySchema = {
   },
 };
 
-export const Schema = {
+export const getCategorySchema = {
+  params: {
+    categoryId: Joi.string(),
+  },
+};
+
+export const updateCategorySchema = {
+  params: {
+    categoryId: Joi.string().required(),
+  },
+  body: {
+    name: Joi.string().required(),
+  },
+};
+
+export const removeCategorySchema = {
+  params: {
+    categoryId: Joi.string().required(),
+  },
 };
