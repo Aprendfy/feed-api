@@ -15,10 +15,18 @@ describe('INTEGRATION TESTS - POST ', () => {
     image: 'http://i.huffpost.com/gen/3971736/images/o-HAPPY-PEOPLE-facebook.jpg',
   };
 
+  const twitterPost = { ...defaultPost, category: 'Twitter', ownerId: '595ad0f2d6b1670d78158cdd' };
+
   before((done) => {
     postModel.remove({})
+      .then(() => {
+        const Post = postModel;
+        new Post(twitterPost)
+          .save()
           .then(() => done())
           .catch(err => console.log(`Error on before ${err}`));
+      })
+      .catch(err => console.log(`Error on before ${err}`));
   });
 
   describe('POST /admin/user/login', () => {
@@ -74,6 +82,25 @@ describe('INTEGRATION TESTS - POST ', () => {
           expect(res.statusCode).to.be.equal(200);
           expect(payload).to.be.an('object').that.includes(postUpdate);
           expect(payload._id).to.be.eql(defaultPost._id);
+          done(err);
+        });
+    });
+  });
+
+  describe('GET /app/posts/', () => {
+    it.skip('should return all post from one categorie', (done) => {
+      const category = defaultPost.category;
+      request.get(`/v1/app/posts/?category=${category}`)
+        .set('Authorizathion', defaultUser.authorization)
+        .end((err, res) => {
+          const { payload } = res.body;
+
+          expect(res.statusCode).to.be.equal(200);
+          expect(payload).to.be.an('array');
+          expect(payload).to.satisfy((posts) => {
+            posts.forEach(post => post.category === category);
+          });
+
           done(err);
         });
     });
