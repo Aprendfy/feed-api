@@ -80,3 +80,21 @@ export function updatePost(user, postId, data) {
     });
 }
 
+export function getPosts(category, skip = 0, limit = 20) {
+  return Post.find(
+    {
+      category,
+    },
+    {
+      _v: 0,
+    },
+    {
+      skip,
+      limit,
+    })
+    .then(result => result)
+    .catch((err) => {
+      throw Object(err);
+    });
+}
+

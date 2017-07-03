@@ -1,8 +1,8 @@
 import express from 'express';
 import validate from 'express-validation';
 
-import { createPost, updatePost } from '../../../models/app/post/';
-import { createPostSchema, updatePostSchema } from './schema';
+import { createPost, updatePost, getPosts } from '../../../models/app/post/';
+import { createPostSchema, updatePostSchema, getPostsSchema } from './schema';
 
 const router = express.Router();
 
@@ -15,6 +15,13 @@ router.post('/', validate(createPostSchema), ({ body, user }, res, next) => {
 router.put('/:postId', validate(updatePostSchema), ({ body, params, user }, res, next) => {
   const { postId } = params;
   updatePost(user, postId, body)
+    .then(payload => res.status(200).json({ payload }))
+    .catch(error => next(error));
+});
+
+router.get('/', validate(getPostsSchema), ({ query }, res, next) => {
+  const { category, skip, limit } = query;
+  getPosts(category, skip, limit)
     .then(payload => res.status(200).json({ payload }))
     .catch(error => next(error));
 });
