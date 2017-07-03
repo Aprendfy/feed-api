@@ -47,6 +47,6 @@ app.use('/v1/app/posts', post);
 app.use(handlers.validationError);
 app.use(handlers.internalError);
 
-app.listen(port, () => console.log(`[#] Server on port: ${port}`));
+app.listen(port, () => {});
 
 export default app;
