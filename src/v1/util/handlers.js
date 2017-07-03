@@ -13,9 +13,9 @@ export function validationError(err, req, res, next) {
 }
 
 export function internalError(err, req, res, next) {
-  return res.status(err.status || 500).json({
+  next(res.status(err.status || 500).json({
     payload: err.payload ? {} : err,
     status: err.status || 500,
     message: err.message || messages.INTERNAL_ERROR,
-  });
+  }));
 }

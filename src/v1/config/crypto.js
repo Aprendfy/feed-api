@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import Promise from 'bluebird';
 
 const saltRounds = 10;
