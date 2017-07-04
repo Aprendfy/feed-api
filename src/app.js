@@ -23,6 +23,7 @@ const unless = {
     { url: /^\/v1\/admin\/auth\/register/ },
     { url: /^\/v1\/admin\/auth\/login/ },
     { url: /^\/v1\/app\/categories\//, methods: ['GET'] },
+    { url: /^\/v1\/app\/posts\//, methods: ['GET'] },
   ],
 };
 

@@ -36,3 +36,11 @@ export const updatePostSchema = {
     allowUnknownBody: false,
   },
 };
+
+export const getPostsSchema = {
+  query: {
+    category: Joi.string().required(),
+    skip: Joi.number().min(0),
+    limit: Joi.number().min(0).max(20),
+  },
+};

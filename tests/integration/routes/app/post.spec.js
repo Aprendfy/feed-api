@@ -15,10 +15,17 @@ describe('INTEGRATION TESTS - POST ', () => {
     image: 'http://i.huffpost.com/gen/3971736/images/o-HAPPY-PEOPLE-facebook.jpg',
   };
 
+  const facebookPost = { ...defaultPost, category: 'Facebook', ownerId: '595ad0f2d6b1670d78158cdd' };
+
   before((done) => {
     postModel.remove({})
-          .then(() => done())
-          .catch(err => console.log(`Error on before ${err}`));
+      .then(() => {
+        const Post = postModel;
+        new Post(facebookPost)
+          .save()
+          .then(() => done());
+      })
+      .catch(err => console.log(`Error on before ${err}`));
   });
 
   describe('POST /admin/user/login', () => {
@@ -74,6 +81,22 @@ describe('INTEGRATION TESTS - POST ', () => {
           expect(res.statusCode).to.be.equal(200);
           expect(payload).to.be.an('object').that.includes(postUpdate);
           expect(payload._id).to.be.eql(defaultPost._id);
+          done(err);
+        });
+    });
+  });
+
+  describe('GET /app/posts/', () => {
+    it('should return all post from one category', (done) => {
+      const category = facebookPost.category;
+      request.get(`/v1/app/posts/?category=${category}`)
+        .end((err, res) => {
+          const { payload } = res.body;
+
+          expect(res.statusCode).to.be.equal(200);
+          expect(payload).to.be.an('array');
+          expect(payload).to.satisfy(posts => posts.every(post => post.category === category));
+
           done(err);
         });
     });
