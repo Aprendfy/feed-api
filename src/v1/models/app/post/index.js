@@ -2,6 +2,20 @@ import mongoose from '../../../config/mongo';
 
 import * as messages from '../../../config/messages';
 
+const DEFAULT_AUTHOR_PROJECTION = {
+  'author._id': 1,
+  'author.name': 1,
+  'author.avatar': 1,
+};
+const DEFAULT_POST_PROJECTION = {
+  title: 1,
+  category: 1,
+  readingTime: 1,
+  level: 1,
+  body: 1,
+  image: 1,
+};
+
 const PostSchema = new mongoose.Schema({
   ownerId: {
     type: mongoose.SchemaTypes.ObjectId,
@@ -38,8 +52,8 @@ export function createPost(data) {
   return new Post(data)
     .save()
     .then(payload => payload)
-    .catch((err) => {
-      throw Object({ message: messages.CREATE_POST_FAILED, status: 422, payload: err });
+    .catch(() => {
+      throw new Error(messages.CREATE_POST_FAILED);
     });
 }
 
@@ -65,36 +79,81 @@ export function updatePost(user, postId, data) {
     },
     {
       new: true,
-      projection: {
-        __v: 0,
-      },
+      projection: DEFAULT_POST_PROJECTION,
     })
     .then((result) => {
-      if (!result) {
-        throw Object({ message: messages.POST_NOT_FOUND, status: 422 });
+      if (result === null) {
+        throw new Error({ message: messages.POST_NOT_FOUND, status: 422 });
       }
       return result;
     })
     .catch((err) => {
-      throw Object(err);
+      throw new Error(err);
     });
 }
 
-export function getPosts(category, skip = 0, limit = 20) {
-  return Post.find(
+export function getPost(postId) {
+  const ObjectId = mongoose.Types.ObjectId;
+
+  return Post.aggregate([
     {
-      category,
+      $match: {
+        _id: ObjectId(postId),
+      },
     },
     {
-      _v: 0,
+      $lookup: {
+        from: 'users',
+        localField: 'ownerId',
+        foreignField: '_id',
+        as: 'author',
+      },
     },
     {
-      skip,
-      limit,
+      $unwind: '$author',
+    },
+    {
+      $project: { ...DEFAULT_POST_PROJECTION, ...DEFAULT_AUTHOR_PROJECTION },
+    },
+  ])
+    .then((result) => {
+      if (result.length === 0) {
+        throw new Error(messages.POST_NOT_FOUND);
+      }
+      return result[0];
     })
+    .catch((err) => {
+      throw new Error(err);
+    });
+}
+
+export function getPosts(category, $skip = 0, $limit = 20) {
+  return Post.aggregate([
+    {
+      $match: {
+        category,
+      },
+    },
+    { $skip },
+    { $limit },
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'ownerId',
+        foreignField: '_id',
+        as: 'author',
+      },
+    },
+    {
+      $unwind: '$author',
+    },
+    {
+      $project: { ...DEFAULT_POST_PROJECTION, ...DEFAULT_AUTHOR_PROJECTION },
+    },
+  ])
     .then(result => result)
     .catch((err) => {
-      throw Object(err);
+      throw new Error(err);
     });
 }
 
