@@ -22,3 +22,6 @@ ratings:
   paths:
     - "**.js"
     - "**.jsx"
+exclude_paths:
+- "tests/"
+- "dist/"
