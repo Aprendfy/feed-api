@@ -44,3 +44,9 @@ export const getPostsSchema = {
     limit: Joi.number().min(0).max(20),
   },
 };
+
+export const getPostSchema = {
+  params: {
+    postId: Joi.string().required(),
+  },
+};

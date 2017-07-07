@@ -15,15 +15,18 @@ describe('INTEGRATION TESTS - POST ', () => {
     image: 'http://i.huffpost.com/gen/3971736/images/o-HAPPY-PEOPLE-facebook.jpg',
   };
 
-  const facebookPost = { ...defaultPost, category: 'Facebook', ownerId: '595ad0f2d6b1670d78158cdd' };
+  const twitterPost = { ...defaultPost, category: 'Twitter', ownerId: '595ad0f2d6b1670d78158cdd' };
 
   before((done) => {
     postModel.remove({})
       .then(() => {
         const Post = postModel;
-        new Post(facebookPost)
+        new Post(twitterPost)
           .save()
-          .then(() => done());
+          .then((result) => {
+            twitterPost._id = result._id;
+            done();
+          });
       })
       .catch(err => console.log(`Error on before ${err}`));
   });
@@ -54,10 +57,43 @@ describe('INTEGRATION TESTS - POST ', () => {
         .set('Authorization', defaultUser.authorization)
         .end((err, res) => {
           const { payload } = res.body;
+
           expect(res.statusCode).to.be.equal(201);
           expect(payload).to.be.an('object').that.includes(defaultPost);
           expect(payload._id).to.be.an('string');
           defaultPost._id = payload._id;
+
+          done(err);
+        });
+    });
+  });
+
+
+  describe('GET /app/posts/', () => {
+    it('should return all post from one category', (done) => {
+      const category = defaultPost.category;
+      request.get(`/v1/app/posts/?category=${category}`)
+        .end((err, res) => {
+          const { payload } = res.body;
+
+          expect(res.statusCode).to.be.equal(200);
+          expect(payload).to.be.an('array');
+          expect(payload).to.satisfy(posts => posts.every(post => post.category === category));
+          expect(payload[0].author).to.be.an('object').that.has.all.keys('_id', 'name');
+
+          done(err);
+        });
+    });
+    it('should return the post with the specified id', (done) => {
+      request.get(`/v1/app/posts/${defaultPost._id}`)
+        .end((err, res) => {
+          const { payload } = res.body;
+          const post = { ...defaultPost };
+          delete post._id;
+          expect(res.statusCode).to.be.equal(200);
+          expect(payload).to.be.an('object').that.includes(post);
+          expect(payload.author).to.be.an('object').that.has.all.keys('_id', 'name');
+
           done(err);
         });
     });
@@ -81,22 +117,6 @@ describe('INTEGRATION TESTS - POST ', () => {
           expect(res.statusCode).to.be.equal(200);
           expect(payload).to.be.an('object').that.includes(postUpdate);
           expect(payload._id).to.be.eql(defaultPost._id);
-          done(err);
-        });
-    });
-  });
-
-  describe('GET /app/posts/', () => {
-    it('should return all post from one category', (done) => {
-      const category = facebookPost.category;
-      request.get(`/v1/app/posts/?category=${category}`)
-        .end((err, res) => {
-          const { payload } = res.body;
-
-          expect(res.statusCode).to.be.equal(200);
-          expect(payload).to.be.an('array');
-          expect(payload).to.satisfy(posts => posts.every(post => post.category === category));
-
           done(err);
         });
     });
