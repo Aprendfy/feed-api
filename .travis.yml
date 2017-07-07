@@ -7,14 +7,15 @@ cache:
 sudo: false
 services:
 - mongodb
-apt:
-  sources:
-    - mongodb-upstart
-    - sourceline: 'deb [arch=amd64] http://repo.mongodb.org/apt/ubuntu precise/mongodb-org/3.4 multiverse'
-      key_url: 'https://www.mongodb.org/static/pgp/server-3.4.asc'
-  packages:
-    - mongodb-org-server
-    - mongodb-org-shell
+addons:
+  apt:
+    sources:
+      - mongodb-upstart
+      - sourceline: 'deb [arch=amd64] http://repo.mongodb.org/apt/ubuntu precise/mongodb-org/3.4 multiverse'
+        key_url: 'https://www.mongodb.org/static/pgp/server-3.4.asc'
+    packages:
+      - mongodb-org-server
+      - mongodb-org-shell
 install:
   - npm install
 script:
