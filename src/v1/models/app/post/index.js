@@ -1,3 +1,4 @@
+import S3 from 'aws-sdk/clients/s3';
 import mongoose from '../../../config/mongo';
 
 import * as messages from '../../../config/messages';
@@ -48,7 +49,8 @@ export function postModel() {
 
 const Post = postModel();
 
-export function createPost(data) {
+export function createPost(data, file = null) {
+  // TODO send file to S3
   return new Post(data)
     .save()
     .then(payload => payload)

@@ -29,8 +29,8 @@ const unless = {
 
 const dateOfBirth = new Date();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }));
+app.use(bodyParser.json({ limit: '5mb' }));
 app.use(cors());
 app.use(morgan('dev'));
 
@@ -48,6 +48,6 @@ app.use('/v1/app/posts', post);
 app.use(handlers.validationError);
 app.use(handlers.internalError);
 
-app.listen(port, () => {});
+app.listen(port, () => { });
 
 export default app;
