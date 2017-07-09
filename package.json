@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build && node dist/app.js",
-    "build": "babel src --out-dir dist --source-maps",
+    "start": "node dist/app.js",
+    "postinstall": "npm run build",
+    "build": "./node_modules/.bin/babel src --out-dir dist --source-maps",
     "dev": "nodemon src/app.js --exec ./node_modules/.bin/babel-node",
     "dev-win": "nodemon src/app.js --exec babel-node",
     "test": "mocha ./tests/ --compilers js:babel-register --recursive",

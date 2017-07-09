@@ -15,7 +15,7 @@ import category from './v1/services/app/category';
 import post from './v1/services/app/post';
 
 
-const port = process.eventNames.PORT || 3000;
+const port = process.env.PORT || 3000;
 const app = express();
 
 const unless = {
