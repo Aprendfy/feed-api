@@ -7,6 +7,7 @@ describe('INTEGRATION TESTS - CATEGORIES', () => {
   };
   const defaultCategory = {
     name: 'Facebook',
+    color: 'AAAAAA'
   };
 
   before((done) => {
@@ -78,6 +79,7 @@ describe('INTEGRATION TESTS - CATEGORIES', () => {
     it('should update a category', (done) => {
       const json = {
         name: 'Mega Novo Facebook',
+        color: 'FFFFFF'
       };
       request.put(`/v1/app/categories/${defaultCategory._id}`)
         .send(json)
