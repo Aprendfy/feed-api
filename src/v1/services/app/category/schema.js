@@ -3,6 +3,7 @@ import Joi from 'joi';
 export const newCategorySchema = {
   body: {
     name: Joi.string().required(),
+    color: Joi.string().required(),
   },
 };
 
@@ -18,6 +19,7 @@ export const updateCategorySchema = {
   },
   body: {
     name: Joi.string().required(),
+    color: Joi.string().required(),
   },
 };
 
