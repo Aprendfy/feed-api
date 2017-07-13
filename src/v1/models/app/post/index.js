@@ -1,7 +1,6 @@
-import imageType from 'image-type';
 import mongoose from '../../../config/mongo';
-import S3, { AWS_S3_BUCKET_NAME } from '../../../config/aws';
 import * as messages from '../../../config/messages';
+import { uploadImage } from '../../../util/imageUpload';
 
 const DEFAULT_AUTHOR_PROJECTION = {
   'author._id': 1,
@@ -52,23 +51,8 @@ const Post = postModel();
 export async function createPost(data, file = null) {
   const postId = new mongoose.Types.ObjectId();
   const dataInsert = { ...data, _id: postId };
-
   if (file !== null) {
-    const imgType = imageType(file.buffer);
-    if (imgType === null) {
-      throw new Error(messages.IMAGE_INVALID_FORMAT);
-    }
-    const imageKey = `img/${postId}.${imgType.ext}`;
-
-    await S3.putObject({
-      Bucket: AWS_S3_BUCKET_NAME,
-      Key: imageKey,
-      Body: file.buffer,
-      ContentType: imgType.mime,
-      ACL: 'public-read',
-    }).promise();
-
-    dataInsert.image = imageKey;
+    dataInsert.image = await uploadImage(file.buffer, postId.toString());
   }
 
   return new Post(dataInsert)

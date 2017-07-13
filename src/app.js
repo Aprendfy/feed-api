@@ -14,6 +14,8 @@ import authAdmin from './v1/services/admin/authentication';
 import category from './v1/services/app/category';
 import post from './v1/services/app/post';
 
+import { DEFAULT_FILE_UPLOAD_SIZE } from './v1/config/constants';
+console.log(DEFAULT_FILE_UPLOAD_SIZE);
 
 const port = process.eventNames.PORT || 3000;
 const app = express();
@@ -29,8 +31,8 @@ const unless = {
 
 const dateOfBirth = new Date();
 
-app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }));
-app.use(bodyParser.json({ limit: '5mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: DEFAULT_FILE_UPLOAD_SIZE }));
+app.use(bodyParser.json({ limit: DEFAULT_FILE_UPLOAD_SIZE }));
 app.use(cors());
 app.use(morgan('dev'));
 
