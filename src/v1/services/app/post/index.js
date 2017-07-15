@@ -1,13 +1,23 @@
 import express from 'express';
 import validate from 'express-validation';
+import multer from 'multer';
 
 import { createPost, updatePost, getPosts, getPost } from '../../../models/app/post/';
 import { createPostSchema, updatePostSchema, getPostsSchema, getPostSchema } from './schema';
 
+import { DEFAULT_FILE_UPLOAD_SIZE } from '../../../config/constants';
+
 const router = express.Router();
 
-router.post('/', validate(createPostSchema), ({ body, user }, res, next) => {
-  createPost({ ...body, ownerId: user._id })
+const memoryStorage = multer.memoryStorage();
+const upload = multer({
+  storage: memoryStorage,
+  limits: { fileSize: DEFAULT_FILE_UPLOAD_SIZE, files: 1 },
+});
+
+
+router.post('/', upload.single('file'), validate(createPostSchema), ({ body, user, file }, res, next) => {
+  createPost({ ...body, ownerId: user._id }, file)
     .then(payload => res.status(201).json({ payload }))
     .catch(error => next(error));
 });
@@ -19,9 +29,9 @@ router.get('/:postId', validate(getPostSchema), ({ params }, res, next) => {
     .catch(error => next(error));
 });
 
-router.put('/:postId', validate(updatePostSchema), ({ body, params, user }, res, next) => {
+router.put('/:postId', upload.single('file'), validate(updatePostSchema), ({ body, params, user, file }, res, next) => {
   const { postId } = params;
-  updatePost(user, postId, body)
+  updatePost(user, postId, body, file)
     .then(payload => res.status(200).json({ payload }))
     .catch(error => next(error));
 });
