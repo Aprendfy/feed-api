@@ -38,3 +38,10 @@ export async function uploadImage(buffer, name) {
   return imagePath;
 }
 
+export function deleteImage(path) {
+  return S3.deleteObject({
+    Bucket: AWS_S3_BUCKET_NAME,
+    Key: path,
+  }).promise();
+}
+

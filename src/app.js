@@ -15,7 +15,6 @@ import category from './v1/services/app/category';
 import post from './v1/services/app/post';
 
 import { DEFAULT_FILE_UPLOAD_SIZE } from './v1/config/constants';
-console.log(DEFAULT_FILE_UPLOAD_SIZE);
 
 const port = process.eventNames.PORT || 3000;
 const app = express();

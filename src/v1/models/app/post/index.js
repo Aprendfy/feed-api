@@ -1,6 +1,6 @@
 import mongoose from '../../../config/mongo';
 import * as messages from '../../../config/messages';
-import { uploadImage } from '../../../util/imageUpload';
+import { uploadImage, deleteImage } from '../../../util/imageUpload';
 
 const DEFAULT_AUTHOR_PROJECTION = {
   'author._id': 1,
@@ -63,10 +63,28 @@ export async function createPost(data, file = null) {
     });
 }
 
-export function updatePost(user, postId, data) {
+export async function updatePost(user, postId, data, file = null) {
   const ObjectId = mongoose.Types.ObjectId;
 
-  const { title, category, readingTime, level, body, image } = data;
+  const { title, category, readingTime, level, body } = data;
+  let { image } = data;
+
+  const post = await Post.findOne(
+    {
+      _id: ObjectId(postId),
+      ownerId: ObjectId(user._id),
+    },
+    {
+      _id: 1,
+      image: 1,
+    });
+
+  if (file !== null && post !== null) {
+    if (typeof post.image !== 'undefined' && !post.image.startsWith('http')) {
+      await deleteImage(post.image);
+    }
+    image = await uploadImage(file.buffer, postId.toString());
+  }
 
   return Post.findOneAndUpdate(
     {

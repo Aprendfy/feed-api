@@ -29,9 +29,9 @@ router.get('/:postId', validate(getPostSchema), ({ params }, res, next) => {
     .catch(error => next(error));
 });
 
-router.put('/:postId', validate(updatePostSchema), ({ body, params, user }, res, next) => {
+router.put('/:postId', upload.single('file'), validate(updatePostSchema), ({ body, params, user, file }, res, next) => {
   const { postId } = params;
-  updatePost(user, postId, body)
+  updatePost(user, postId, body, file)
     .then(payload => res.status(200).json({ payload }))
     .catch(error => next(error));
 });
