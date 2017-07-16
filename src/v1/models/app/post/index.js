@@ -16,6 +16,11 @@ const DEFAULT_POST_PROJECTION = {
   image: 1,
 };
 
+const POST_BY_ID_USER_CAN_EDIT = (postId, userId) => ({
+  _id: mongoose.Types.ObjectId(postId),
+  ownerId: mongoose.Types.ObjectId(userId),
+});
+
 const PostSchema = new mongoose.Schema({
   ownerId: {
     type: mongoose.SchemaTypes.ObjectId,
@@ -48,10 +53,10 @@ export function postModel() {
 
 const Post = postModel();
 
-export async function createPost(data, file = null) {
+export async function createPost(data, file) {
   const postId = new mongoose.Types.ObjectId();
   const dataInsert = { ...data, _id: postId };
-  if (file !== null) {
+  if (typeof file !== 'undefined') {
     dataInsert.image = await uploadImage(file.buffer, postId.toString());
   }
 
@@ -63,23 +68,18 @@ export async function createPost(data, file = null) {
     });
 }
 
-export async function updatePost(user, postId, data, file = null) {
-  const ObjectId = mongoose.Types.ObjectId;
-
+export async function updatePost(user, postId, data, file) {
   const { title, category, readingTime, level, body } = data;
   let { image } = data;
 
   const post = await Post.findOne(
-    {
-      _id: ObjectId(postId),
-      ownerId: ObjectId(user._id),
-    },
+    POST_BY_ID_USER_CAN_EDIT(postId, user._id),
     {
       _id: 1,
       image: 1,
     });
 
-  if (file !== null && post !== null) {
+  if (typeof file !== 'undefined' && post !== null) {
     if (typeof post.image !== 'undefined' && !post.image.startsWith('http')) {
       await deleteImage(post.image);
     }
@@ -87,10 +87,7 @@ export async function updatePost(user, postId, data, file = null) {
   }
 
   return Post.findOneAndUpdate(
-    {
-      _id: ObjectId(postId),
-      ownerId: ObjectId(user._id),
-    },
+    POST_BY_ID_USER_CAN_EDIT(postId, user._id),
     {
       $set: {
         title,
