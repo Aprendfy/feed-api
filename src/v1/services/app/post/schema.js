@@ -8,6 +8,7 @@ export const createPostSchema = {
     level: Joi.string(),
     body: Joi.string().required(),
     image: Joi.string(),
+    file: Joi.binary(),
   },
   user: {
     _id: Joi.string().required(),
