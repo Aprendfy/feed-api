@@ -21,3 +21,9 @@ install:
 script:
   - npm run lint
   - npm run test
+deploy:
+  - provider: heroku
+    app: aprendfy
+    api_key: $HEROKU_API_KEY
+    on:
+      branch: master
