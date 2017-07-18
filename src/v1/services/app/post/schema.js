@@ -26,6 +26,7 @@ export const updatePostSchema = {
     level: Joi.string(),
     body: Joi.string().required(),
     image: Joi.string(),
+    file: Joi.binary(),
   },
   params: {
     postId: Joi.string().required(),
