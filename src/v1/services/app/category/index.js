@@ -2,14 +2,24 @@ import express from 'express';
 import validate from 'express-validation';
 
 import { create, update, remove, findByIdOrFindAll } from '../../../models/app/category/';
+import { getPosts } from '../../../models/app/post/';
 import {
   newCategorySchema,
   getCategorySchema,
   updateCategorySchema,
   removeCategorySchema,
+  getPostsSchema,
 } from './schema';
 
 const router = express.Router();
+
+router.get('/:categoryName/posts', validate(getPostsSchema), ({ query, params }, res, next) => {
+  const { categoryName } = params;
+  const { skip, limit } = query;
+  getPosts(categoryName, skip, limit)
+    .then(payload => res.status(200).json({ payload }))
+    .catch(error => next(error));
+});
 
 router.post('/', validate(newCategorySchema), ({ body }, res, next) => {
   create(body)

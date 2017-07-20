@@ -28,3 +28,13 @@ export const removeCategorySchema = {
     categoryId: Joi.string().required(),
   },
 };
+
+export const getPostsSchema = {
+  params: {
+    categoryName: Joi.string().required(),
+  },
+  query: {
+    skip: Joi.number().min(0),
+    limit: Joi.number().min(0).max(20),
+  },
+};
