@@ -11,3 +11,4 @@ export const CREATE_POST_FAILED = 'Falha ao salvar o post';
 export const POST_NOT_FOUND = 'Post não encontrado';
 export const IMAGE_UPLOAD_FAILED = 'Ocorreu um erro no upload da imagem';
 export const IMAGE_INVALID_FORMAT = 'Formato da imagem inválido';
+export const REMOVE_POST_FAILED  = 'Falha ao Remover Post';

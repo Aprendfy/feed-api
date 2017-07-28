@@ -2,8 +2,8 @@ import express from 'express';
 import validate from 'express-validation';
 import multer from 'multer';
 
-import { createPost, updatePost, getPosts, getPost } from '../../../models/app/post/';
-import { createPostSchema, updatePostSchema, getPostsSchema, getPostSchema } from './schema';
+import { createPost, updatePost, getPosts, getPost, removePost } from '../../../models/app/post/';
+import { createPostSchema, updatePostSchema, getPostsSchema, getPostSchema, removePostSchema } from './schema';
 
 import { DEFAULT_FILE_UPLOAD_SIZE } from '../../../config/constants';
 
@@ -39,6 +39,13 @@ router.put('/:postId', upload.single('file'), validate(updatePostSchema), ({ bod
 router.get('/', validate(getPostsSchema), ({ query }, res, next) => {
   const { category, skip, limit } = query;
   getPosts(category, skip, limit)
+    .then(payload => res.status(200).json({ payload }))
+    .catch(error => next(error));
+});
+
+router.delete('/:postId', validate(removePostSchema), ({ params }, res, next) => {
+  const { postId } = params;
+  removePost(postId)
     .then(payload => res.status(200).json({ payload }))
     .catch(error => next(error));
 });
