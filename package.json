@@ -15,14 +15,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hebertporto/feed-api.git"
+    "url": "https://github.com/Aprendfy/feed-api"
   },
-  "author": "Hebert Porto <hebertporto@gmail.com>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/hebertporto/feed-api/issues"
-  },
-  "homepage": "https://github.com/hebertporto/feed-api#readme",
   "dependencies": {
     "aws-sdk": "^2.82.0",
     "babel-runtime": "^6.23.0",
@@ -64,6 +58,7 @@
     "eslint-plugin-jsx-a11y": "5.0.1",
     "eslint-plugin-react": "7.0.1",
     "mocha": "^3.4.2",
+    "nodemon": "1.11.0",
     "pre-commit": "^1.2.2",
     "supertest": "^3.0.0"
   }

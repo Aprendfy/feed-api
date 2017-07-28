@@ -19,6 +19,23 @@ describe('INTEGRATION TESTS - CATEGORIES', () => {
       });
   });
 
+  describe('GET /v1/app/categories/:categoryName/posts', () => {
+    it('should return posts from category', (done) => {
+      const categoryName = defaultCategory.name;
+      request.get(`/v1/app/categories/${categoryName}/posts`)
+        .end((err, res) => {
+          const { payload } = res.body;
+
+          expect(res.statusCode).to.be.equal(200);
+          expect(payload).to.be.an('array');
+          expect(payload).to.satisfy(posts => posts.every(post => post.category === category));
+          expect(payload[0].author).to.be.an('object').that.has.all.keys('_id', 'name');
+
+          done(err);
+        });
+    });
+  })
+
   describe('POST /admin/user/login', () => {
     it('should return the login user', (done) => {
       const json = {
