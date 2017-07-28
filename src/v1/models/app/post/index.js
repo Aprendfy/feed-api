@@ -178,3 +178,13 @@ export function getPosts(category, $skip = 0, $limit = 20) {
     });
 }
 
+export function removePost(postId) {
+  const ObjectId = mongoose.Types.ObjectId;
+
+  return Post.remove({ _id: ObjectId(postId) })
+    .exec()
+    .then(payload => payload)
+    .catch((err) => {
+      throw Object({ message: messages.REMOVE_POST_FAILED, status: 422, payload: err });
+    });
+}

@@ -52,3 +52,9 @@ export const getPostSchema = {
     postId: Joi.string().required(),
   },
 };
+
+export const removePostSchema = {
+  params: {
+    postId: Joi.string().required(),
+  },
+};
